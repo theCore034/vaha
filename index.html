@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Váha - Odhad váhy na základě více faktorů</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+  }
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  h1 {
+    text-align: center;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  label {
+    margin-bottom: 10px;
+  }
+  input[type="number"], input[type="text"], select {
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+  #result {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Váha - Odhad váhy na základě více faktorů</h1>
+  <form id="weightForm">
+    <label for="height">Výška (cm):</label>
+    <input type="number" id="height" required><br>
+    
+    <label for="waistRadius">Průměr pasu (cm):</label>
+    <input type="number" id="waistRadius" required><br>
+    
+    <label for="sex">Pohlaví:</label>
+    <select id="sex" required>
+      <option value="male">Muž</option>
+      <option value="female">Žena</option>
+    </select><br>
+    
+    <label for="age">Věk:</label>
+    <input type="number" id="age" required><br>
+    
+    <label for="activity">Úroveň fyzické aktivity:</label>
+    <select id="activity" required>
+      <option value="sedentary">Sedavá práce, málo pohybu</option>
+      <option value="lightlyActive">Lehce aktivní (lehká práce, málo pohybu)</option>
+      <option value="moderatelyActive">Středně aktivní (středně fyzicky náročná práce, pravidelný pohyb)</option>
+      <option value="veryActive">Velmi aktivní (fyzicky náročná práce, častý pohyb)</option>
+      <option value="extraActive">Extrémně aktivní (velmi fyzicky náročná práce, intenzivní pohyb)</option>
+    </select><br>
+    
+    <button type="button" onclick="calculateWeight()">Spočítat váhu</button>
+  </form>
+  
+  <div id="result"></div>
+</div>
+
+<script>
+function calculateWeight() {
+  const height = parseInt(document.getElementById('height').value);
+  const waistRadius = parseInt(document.getElementById('waistRadius').value);
+  const sex = document.getElementById('sex').value;
+  const age = parseInt(document.getElementById('age').value);
+  const activity = document.getElementById('activity').value;
+  
+  let estimatedWeight = 0;
+  
+  // Example calculation based on adjusted BMI, waist radius, age, and activity level
+  if (sex === 'male') {
+    estimatedWeight = (height - 100 + (waistRadius / 2)) * 0.9;
+  } else if (sex === 'female') {
+    estimatedWeight = (height - 100 + (waistRadius / 2)) * 0.85;
+  }
+  
+  // Adjust estimated weight based on age and activity level
+  switch (activity) {
+    case 'sedentary':
+      estimatedWeight *= 1.2;
+      break;
+    case 'lightlyActive':
+      estimatedWeight *= 1.375;
+      break;
+    case 'moderatelyActive':
+      estimatedWeight *= 1.55;
+      break;
+    case 'veryActive':
+      estimatedWeight *= 1.725;
+      break;
+    case 'extraActive':
+      estimatedWeight *= 1.9;
+      break;
+    default:
+      break;
+  }
+  
+  const resultElement = document.getElementById('result');
+  resultElement.innerHTML = `Odhadovaná váha: ${estimatedWeight.toFixed(2)} kg`;
+}
+</script>
+
+</body>
+</html>
